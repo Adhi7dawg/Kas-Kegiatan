@@ -15,7 +15,6 @@ export function renderChart(rows) {
   box.hidden = false;
   empty.hidden = true;
 
-  // kalau rentang data > 2 bulan, kelompokkan per bulan; kalau tidak, per hari
   const dates = rows.map((r) => r.tanggal).sort();
   const span = (parseISO(dates[dates.length - 1]) - parseISO(dates[0])) / 86400000;
   const byMonth = span > 62;
