@@ -8,7 +8,6 @@ export const BULAN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'S
 export const esc = (s) =>
   String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-// ---------- uang ----------
 const nf = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 });
 export const rp = (n) => 'Rp ' + nf.format(Math.abs(Number(n) || 0));
 export const rpSigned = (n, jenis) => (jenis === 'masuk' ? '+ ' : MINUS + ' ') + rp(n);
@@ -18,7 +17,6 @@ export const num = (v) => {
   return Number.isFinite(n) ? n : NaN;
 };
 
-// ---------- tanggal ----------
 export function parseISO(s) {
   const [y, m, d] = String(s).slice(0, 10).split('-').map(Number);
   return new Date(y, m - 1, d);
@@ -52,7 +50,6 @@ export function periodLabel(period, from, to) {
   return `${r.from ? fmtTanggalLengkap(r.from) : 'awal'} s/d ${r.to ? fmtTanggalLengkap(r.to) : 'sekarang'}`;
 }
 
-// ---------- data transaksi ----------
 export const itemsOf = (tx) => [...(tx.expense_items || [])].sort((a, b) => (a.urutan || 0) - (b.urutan || 0));
 
 export function titleOf(tx) {
@@ -72,7 +69,6 @@ export function summarize(rows) {
   return { masuk, keluar, saldo: masuk - keluar, count: rows.length };
 }
 
-// ---------- UI helper ----------
 export function openModal(html) {
   $('#modal-body').innerHTML = html;
   $('#modal').hidden = false;
