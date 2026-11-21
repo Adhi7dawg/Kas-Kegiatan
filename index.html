@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kas Kegiatan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Kas Kegiatan</h1>
+    <div id="auth-box" class="auth-box"></div>
+  </header>
+
+  <div id="config-warn" class="warn" hidden>
+    <strong>Aplikasi belum disambungkan ke Supabase.</strong>
+    <p>Buka file <code>js/config.js</code>, lalu ganti <code>YOUR_SUPABASE_PROJECT_URL</code> dan <code>YOUR_SUPABASE_ANON_KEY</code> dengan data dari Supabase (Project Settings &gt; API). Setelah itu muat ulang halaman ini.</p>
+  </div>
+
+  <main id="app" hidden>
+    <section id="sec-events">
+      <div class="sec-head">
+        <h2>Kegiatan</h2>
+        <button class="btn" id="btn-new-event" hidden>Kegiatan baru</button>
+      </div>
+      <div id="event-list"></div>
+    </section>
+
+    <div id="ev-sections" hidden>
+      <section id="sec-active">
+        <div id="active"></div>
+        <div class="actions" id="ev-actions" hidden>
+          <button class="btn" id="btn-edit-event">Ubah kegiatan</button>
+          <button class="btn" id="btn-archive">Arsipkan kegiatan</button>
+        </div>
+      </section>
+
+      <section id="sec-dash">
+        <div class="filters">
+          <label class="field"><span class="lbl">Periode</span>
+            <select id="f-period">
+              <option value="all">Semua waktu</option>
+              <option value="month">Bulan ini</option>
+              <option value="lastmonth">Bulan lalu</option>
+              <option value="custom">Rentang tanggal</option>
+            </select>
+          </label>
+          <label class="field" id="w-from" hidden><span class="lbl">Dari tanggal</span><input type="date" id="f-from"></label>
+          <label class="field" id="w-to" hidden><span class="lbl">Sampai tanggal</span><input type="date" id="f-to"></label>
+        </div>
+        <div class="label">Saldo akhir</div>
+        <div class="saldo" id="saldo">Rp 0</div>
+        <div class="stats">
+          <div class="stat"><span>Total uang masuk</span><span class="num" id="st-in">+ Rp 0</span></div>
+          <div class="stat"><span>Total uang keluar</span><span class="num" id="st-out">&minus; Rp 0</span></div>
+          <div class="stat"><span>Jumlah transaksi</span><span class="num" id="st-n">0</span></div>
+        </div>
+      </section>
+
+      <section id="sec-chart">
+        <h2>Uang masuk dan uang keluar</h2>
+        <p class="r-sub key">+ uang masuk, &minus; uang keluar</p>
+        <div id="chart-box" class="chart-box"><canvas id="chart"></canvas></div>
+        <p id="chart-empty" class="empty" hidden>Belum ada data untuk ditampilkan.</p>
+      </section>
+
+      <section id="sec-tx">
+        <div class="sec-head">
+          <h2>Riwayat transaksi</h2>
+          <div class="btns">
+            <button class="btn btn-primary" id="btn-in" hidden>Catat pemasukan</button>
+            <button class="btn btn-primary" id="btn-out" hidden>Catat pengeluaran</button>
+          </div>
+        </div>
+        <div class="filters">
+          <label class="field"><span class="lbl">Jenis</span>
+            <select id="f-jenis">
+              <option value="">Semua jenis</option>
+              <option value="masuk">Uang masuk (+)</option>
+              <option value="keluar">Uang keluar (&minus;)</option>
+            </select>
+          </label>
+          <label class="field"><span class="lbl">Kategori</span><select id="f-kat"><option value="">Semua kategori</option></select></label>
+          <label class="field"><span class="lbl">Cari</span><input type="search" id="f-q" placeholder="Barang, penyetor, keterangan" autocomplete="off"></label>
+        </div>
+        <div id="tx-list"></div>
+      </section>
+
+      <section id="sec-export">
+        <h2>Unduh laporan</h2>
+        <p class="r-sub key">Isinya mengikuti kegiatan, periode, dan filter yang sedang dipilih.</p>
+        <div class="actions">
+          <button class="btn" id="btn-pdf">Unduh PDF</button>
+          <button class="btn" id="btn-xlsx">Unduh Excel</button>
+        </div>
+      </section>
+
+      <section id="sec-audit" hidden>
+        <h2>Riwayat perubahan</h2>
+        <p class="r-sub key">50 perubahan terakhir. Hanya bendahara yang bisa melihat ini.</p>
+        <div id="audit-list"></div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="modal" hidden>
+  <div class="modal-inner">
+    <div class="modal-top"><button class="btn-text" id="modal-close" type="button">Tutup</button></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+<div id="toast" role="status" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

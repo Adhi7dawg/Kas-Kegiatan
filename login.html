@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Masuk bendahara - Kas Kegiatan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="login">
+  <h1>Masuk bendahara</h1>
+  <p class="r-sub key">Halaman ini hanya untuk bendahara. Kalau cuma mau lihat kas, tidak perlu masuk.</p>
+
+  <div id="config-warn" class="warn" hidden>
+    <strong>Aplikasi belum disambungkan ke Supabase.</strong>
+    <p>Isi <code>js/config.js</code> dengan URL dan anon key dari Supabase, lalu muat ulang halaman ini.</p>
+  </div>
+
+  <div id="login-err" class="err" hidden></div>
+
+  <form id="login-form" novalidate>
+    <label class="field"><span class="lbl">Email</span>
+      <input type="email" id="email" autocomplete="username" required>
+    </label>
+    <label class="field"><span class="lbl">Kata sandi</span>
+      <input type="password" id="password" autocomplete="current-password" required>
+    </label>
+    <div class="actions">
+      <button class="btn btn-primary" type="submit" id="btn-login">Masuk</button>
+      <a class="btn" href="index.html">Kembali</a>
+    </div>
+  </form>
+</div>
+
+<script type="module">
+  import { isConfigured } from './js/config.js';
+  import { sb } from './js/supabase.js';
+  import { getSession, login } from './js/auth.js';
+
+  const $ = (s) => document.querySelector(s);
+  const err = (m) => { const e = $('#login-err'); e.textContent = m; e.hidden = !m; };
+
+  if (!isConfigured() || !sb) {
+    $('#config-warn').hidden = false;
+    $('#login-form').hidden = true;
+  } else {
+    getSession().then((s) => { if (s) location.href = 'index.html'; });
+    $('#login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err('');
+      const email = $('#email').value.trim();
+      const pass = $('#password').value;
+      if (!email || !pass) return err('Isi email dan kata sandi dulu ya.');
+      const btn = $('#btn-login');
+      btn.disabled = true;
+      try {
+        await login(email, pass);
+        location.href = 'index.html';
+      } catch (ex) {
+        err('Email atau kata sandi salah. Coba lagi.');
+        btn.disabled = false;
+      }
+    });
+  }
+</script>
+</body>
+</html>
