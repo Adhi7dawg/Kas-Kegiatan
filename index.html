@@ -6,13 +6,16 @@
   <title>Kas Kegiatan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>Kas Kegiatan</h1>
+    <div class="brand">
+      <span class="idx" aria-hidden="true">00 · BUKU KAS</span>
+      <h1>Kas Kegiatan</h1>
+    </div>
     <div id="auth-box" class="auth-box"></div>
   </header>
 
@@ -24,7 +27,10 @@
   <main id="app" hidden>
     <section id="sec-events">
       <div class="sec-head">
-        <h2>Kegiatan</h2>
+        <div>
+          <span class="idx" aria-hidden="true">01</span>
+          <h2>Kegiatan</h2>
+        </div>
         <button class="btn" id="btn-new-event" hidden>Kegiatan baru</button>
       </div>
       <div id="event-list"></div>
@@ -32,6 +38,7 @@
 
     <div id="ev-sections" hidden>
       <section id="sec-active">
+        <span class="idx" aria-hidden="true">02</span>
         <div id="active"></div>
         <div class="actions" id="ev-actions" hidden>
           <button class="btn" id="btn-edit-event">Ubah kegiatan</button>
@@ -40,6 +47,12 @@
       </section>
 
       <section id="sec-dash">
+        <div class="sec-head">
+          <div>
+            <span class="idx" aria-hidden="true">03</span>
+            <h2>Ringkasan kas</h2>
+          </div>
+        </div>
         <div class="filters">
           <label class="field"><span class="lbl">Periode</span>
             <select id="f-period">
@@ -52,8 +65,10 @@
           <label class="field" id="w-from" hidden><span class="lbl">Dari tanggal</span><input type="date" id="f-from"></label>
           <label class="field" id="w-to" hidden><span class="lbl">Sampai tanggal</span><input type="date" id="f-to"></label>
         </div>
-        <div class="label">Saldo akhir</div>
-        <div class="saldo" id="saldo">Rp 0</div>
+        <div class="saldo-box">
+          <div class="label">Saldo akhir</div>
+          <div class="saldo" id="saldo">Rp 0</div>
+        </div>
         <div class="stats">
           <div class="stat"><span>Total uang masuk</span><span class="num" id="st-in">+ Rp 0</span></div>
           <div class="stat"><span>Total uang keluar</span><span class="num" id="st-out">&minus; Rp 0</span></div>
@@ -62,6 +77,7 @@
       </section>
 
       <section id="sec-chart">
+        <span class="idx" aria-hidden="true">04</span>
         <h2>Uang masuk dan uang keluar</h2>
         <p class="r-sub key">+ uang masuk, &minus; uang keluar</p>
         <div id="chart-box" class="chart-box"><canvas id="chart"></canvas></div>
@@ -70,7 +86,10 @@
 
       <section id="sec-tx">
         <div class="sec-head">
-          <h2>Riwayat transaksi</h2>
+          <div>
+            <span class="idx" aria-hidden="true">05</span>
+            <h2>Riwayat transaksi</h2>
+          </div>
           <div class="btns">
             <button class="btn btn-primary" id="btn-in" hidden>Catat pemasukan</button>
             <button class="btn btn-primary" id="btn-out" hidden>Catat pengeluaran</button>
@@ -91,6 +110,7 @@
       </section>
 
       <section id="sec-export">
+        <span class="idx" aria-hidden="true">06</span>
         <h2>Unduh laporan</h2>
         <p class="r-sub key">Isinya mengikuti kegiatan, periode, dan filter yang sedang dipilih.</p>
         <div class="actions">
@@ -100,6 +120,7 @@
       </section>
 
       <section id="sec-audit" hidden>
+        <span class="idx" aria-hidden="true">07</span>
         <h2>Riwayat perubahan</h2>
         <p class="r-sub key">50 perubahan terakhir. Hanya bendahara yang bisa melihat ini.</p>
         <div id="audit-list"></div>
