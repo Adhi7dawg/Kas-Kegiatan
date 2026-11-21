@@ -15,6 +15,7 @@ export function renderChart(rows) {
   box.hidden = false;
   empty.hidden = true;
 
+  // kalau rentang data > 2 bulan, kelompokkan per bulan; kalau tidak, per hari
   const dates = rows.map((r) => r.tanggal).sort();
   const span = (parseISO(dates[dates.length - 1]) - parseISO(dates[0])) / 86400000;
   const byMonth = span > 62;
@@ -29,20 +30,23 @@ export function renderChart(rows) {
   const keys = [...map.keys()].sort();
   const labels = keys.map((k) => (byMonth ? `${BULAN[Number(k.slice(5, 7)) - 1]} ${k.slice(0, 4)}` : fmtTanggal(k)));
 
-  const fg = '#E9EFEA';
-  const fg2 = '#8FAAAD';
-  const line = '#1F4A52';
+  const deepPetrol = '#123C3D';
+  const dustyBlue = '#8BA6A8';
+  const warmIvory = '#F1EDE5';
+  const darkCharcoal = '#242B2A';
+  const gridLine = 'rgba(18, 60, 61, 0.18)';
+
   Chart.defaults.font.family = "'Inter Tight', system-ui, sans-serif";
   Chart.defaults.font.size = 12;
-  Chart.defaults.color = fg2;
+  Chart.defaults.color = darkCharcoal;
 
   chart = new Chart($('#chart'), {
     type: 'bar',
     data: {
       labels,
       datasets: [
-        { label: 'Uang masuk', data: keys.map((k) => map.get(k).masuk), backgroundColor: fg, borderRadius: 0 },
-        { label: 'Uang keluar', data: keys.map((k) => -map.get(k).keluar), backgroundColor: fg2, borderRadius: 0 },
+        { label: 'Uang masuk', data: keys.map((k) => map.get(k).masuk), backgroundColor: deepPetrol, borderRadius: 0 },
+        { label: 'Uang keluar', data: keys.map((k) => -map.get(k).keluar), backgroundColor: dustyBlue, borderRadius: 0 },
       ],
     },
     options: {
@@ -52,25 +56,25 @@ export function renderChart(rows) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#0B2F36',
-          borderColor: line,
+          backgroundColor: deepPetrol,
+          borderColor: dustyBlue,
           borderWidth: 1,
-          titleColor: fg,
-          bodyColor: fg,
-          cornerRadius: 0,
+          titleColor: warmIvory,
+          bodyColor: warmIvory,
+          cornerRadius: 2,
           callbacks: {
             label: (c) => `${c.dataset.label}: ${c.raw < 0 ? MINUS : '+'} ${rp(c.raw)}`,
           },
         },
       },
       scales: {
-        x: { stacked: true, grid: { color: line }, border: { color: line }, ticks: { color: fg2 } },
+        x: { stacked: true, grid: { color: gridLine }, border: { color: deepPetrol }, ticks: { color: darkCharcoal } },
         y: {
           stacked: true,
-          grid: { color: line },
-          border: { color: line },
+          grid: { color: gridLine },
+          border: { color: deepPetrol },
           ticks: {
-            color: fg2,
+            color: darkCharcoal,
             callback: (v) => (v < 0 ? MINUS : v > 0 ? '+' : '') + compact.format(Math.abs(v)),
           },
         },
